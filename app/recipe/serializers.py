@@ -1,8 +1,6 @@
 """
 Serializers for the Recipe API
 """
-
-from django.db.models.lookups import In
 from rest_framework import serializers
 
 from core.models import (
@@ -60,7 +58,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                 **tag,
             )
             instance.tags.add(tag_obj)
-        
+
     def _get_or_create_ingredients(self, instance, ingredients):
         """
         Get or create ingredients for a recipe
