@@ -16,9 +16,9 @@ ARG DEV=false
 RUN python -m venv /py && \
     apk add --no-cache bash && \
     /py/bin/pip install --upgrade pip && \
-    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache postgresql-client jpeg-dev && \
     apk add --update --no-cache --virtual .tmp-build-deps \
-        build-base postgresql-dev musl-dev libffi-dev && \
+        build-base postgresql-dev musl-dev libffi-dev zlib zlib-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ "$DEV" = "true" ] ; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
@@ -26,8 +26,11 @@ RUN python -m venv /py && \
     rm -rf /tmp && \
     apk del .tmp-build-deps && \
     addgroup -S django-user && \
-    adduser -S django-user -G django-user
-
+    adduser -S django-user -G django-user && \
+    mkdir -p /vol/web/media/uploads && \
+    mkdir -p /vol/web/static/ && \
+    chown -R django-user:django-user /vol && \
+    chmod -R 777 /vol
 
 ENV PATH="/py/bin:$PATH"
 
