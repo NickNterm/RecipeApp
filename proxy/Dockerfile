@@ -1,17 +1,18 @@
-FROM nginxinc/nginx-unprivileged:alpine3.18-perl
+FROM nginxinc/nginx-unprivileged:1-alpine
 LABEL maintainer="Nikolas"
 
-COPY ./default.conf.tpl /etc/nginx/templates/default.conf.tpl
+COPY ./default.conf.tpl /etc/nginx/default.conf.tpl
 COPY ./uwsgi_params /etc/nginx/uwsgi_params
 COPY ./run.sh /run.sh
 
-ENV LISTEN_PORT=8080
+ENV LISTEN_PORT=8000
 ENV APP_HOST=app
 ENV APP_PORT=9000
 
 USER root
 
-RUN touch test.txt
+RUN touch test1.txt
+RUN ls -la
 
 RUN mkdir -p /vol/static && \
     chmod 755 /vol/static && \
